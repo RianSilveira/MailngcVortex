@@ -55,18 +55,10 @@ function processCsvData(data) {
       if (typeof cell === "number" || /^\d+$/.test(cell)) {
         let phone = cell.toString().replace(/\D/g, ''); // Remove qualquer caractere não numérico
 
-        // Remove código do país (55) se existir
-        if (phone.startsWith("55")) {
-          phone = phone.slice(2);
-        }
-
-        // Adiciona DDD, se necessário
+        // Adiciona o DDD e operador, se necessário
         if (phone.length === 8) {
           phone = defaultDDD + phone;
-        }
-
-        // Adiciona número da operadora, se necessário
-        if (phone.length === 10) {
+        } else if (phone.length === 10) {
           phone = phone.slice(0, 2) + defaultOperator + phone.slice(2);
         }
 
