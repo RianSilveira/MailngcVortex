@@ -53,7 +53,8 @@ function processCsvData(data) {
       }
 
       if (typeof cell === "number" || /^\d+$/.test(cell)) {
-        let phone = cell.toString().replace(/\D/g, ''); // Remove qualquer caractere não numérico
+        // Remove todos os caracteres não numéricos
+        let phone = cell.toString().replace(/\D/g, '');
 
         // Adiciona o DDD e operador, se necessário
         if (phone.length === 8) {
