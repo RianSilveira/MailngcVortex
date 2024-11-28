@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Importar Arquivo CSV</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Importar e Validar Arquivo</h1>
+    <form id="fileForm">
+      <label for="fileInput">Selecione um arquivo (.txt ou .csv):</label>
+      <input type="file" id="fileInput" accept=".txt,.csv" />
+      <button type="button" id="processFile">Processar Arquivo</button>
+    </form>
+    <div id="output">
+      <h2>Resultado:</h2>
+      <textarea id="formattedContent" readonly></textarea>
+      <button id="downloadFile">Baixar Arquivo Corrigido</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
