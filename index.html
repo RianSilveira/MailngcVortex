@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Importar Arquivo CSV</title>
+  <title>Importar e Validar Arquivo CSV</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
     <h1>Importar e Validar Arquivo</h1>
     <form id="fileForm">
       <label for="fileInput">Selecione um arquivo (.txt ou .csv):</label>
-      <input type="file" id="fileInput" accept=".txt,.csv" />
+      <input type="file" id="fileInput" accept=".csv,.txt" />
       <button type="button" id="processFile">Processar Arquivo</button>
     </form>
     <div id="output">
@@ -20,6 +20,7 @@
       <button id="downloadFile">Baixar Arquivo Corrigido</button>
     </div>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
