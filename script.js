@@ -83,9 +83,13 @@ document.getElementById("downloadFile").addEventListener("click", () => {
     return;
   }
 
+  const fileInput = document.getElementById("fileInput");
+  const originalFileName = fileInput.files[0].name;
+  const formattedFileName = originalFileName.replace(/(\.[^.]+)$/, "-formatado$1"); // Adiciona "-formatado" antes da extensão
+
   const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "arquivo_formatado.csv";
+  link.download = formattedFileName;
   link.click();
 });
