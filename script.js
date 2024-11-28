@@ -11,27 +11,34 @@ document.getElementById("processFile").addEventListener("click", () => {
   const reader = new FileReader();
 
   reader.onload = (event) => {
-    const data = new Uint8Array(event.target.result);
-    const workbook = XLSX.read(data, { type: "array" });
+    const data = event.target.result;
 
-    // Lê a primeira aba do arquivo
-    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+    let workbook;
+    if (file.name.endsWith(".csv")) {
+      // Se for CSV, trata como texto
+      const rows = data.split("\n").map(row => row.split(";"));
+      const formattedData = processCsvData(rows);
+      outputArea.value = formattedData;
+    } else {
+      // Se for Excel, usa a biblioteca XLSX
+      workbook = XLSX.read(data, { type: "binary" });
+      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
-    // Converte para JSON
-    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
-    // Processa o conteúdo
-    const formattedData = processExcelData(jsonData);
-
-    // Exibe o resultado formatado
-    outputArea.value = formattedData;
+      const formattedData = processCsvData(jsonData);
+      outputArea.value = formattedData;
+    }
     alert("O conteúdo do arquivo foi ajustado com sucesso!");
   };
 
-  reader.readAsArrayBuffer(file);
+  if (file.name.endsWith(".csv")) {
+    reader.readAsText(file, "utf-8");
+  } else {
+    reader.readAsBinaryString(file);
+  }
 });
 
-function processExcelData(data) {
+function processCsvData(data) {
   const defaultDDD = "11";
   const defaultOperator = "9";
   const formattedLines = [];
@@ -41,20 +48,20 @@ function processExcelData(data) {
 
     const formattedRow = row.map((cell) => {
       if (typeof cell === "string") {
-        // Substitui "," por ";" e remove espaços
+        // Substitui "," por ";" e remove espaços antes e depois
         cell = cell.replace(/,/g, ";").trim();
       }
 
       if (typeof cell === "number" || /^\d+$/.test(cell)) {
-        let phone = cell.toString();
+        let phone = cell.toString().replace(/\D/g, ''); // Remove qualquer caractere não numérico
 
-        // Remove código do país (55)
+        // Remove código do país (55) se existir
         if (phone.startsWith("55")) {
           phone = phone.slice(2);
         }
 
         // Adiciona DDD, se necessário
-        if (phone.length < 10) {
+        if (phone.length === 8) {
           phone = defaultDDD + phone;
         }
 
