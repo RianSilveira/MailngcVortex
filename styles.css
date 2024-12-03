@@ -1,12 +1,17 @@
 /* Cor do corpo da página */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
+  background-image: url('https://scontent.fudi1-1.fna.fbcdn.net/v/t39.30808-6/318777526_146965604765200_4319064403753609254_n.png?_nc_cat=109&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=QkcZqXHT3XgQ7kNvgGJYds4&_nc_zt=23&_nc_ht=scontent.fudi1-1.fna&_nc_gid=A7cUjyC9uv8PiuCcTM7bcLs&oh=00_AYCjtr9ueO9XHQo1TVcb0qZNdGV1LlUjH0V52w7ARcaLLw&oe=674E902A'); /* Caminho da sua imagem */
+  background-size: cover; /* Faz a imagem cobrir toda a tela */
+  background-repeat: no-repeat; /* Impede a repetição da imagem */
+  background-position: center; /* Centraliza a imagem */
+  background-attachment: fixed; /* Mantém a imagem fixa ao rolar a página */
+  color: #000000;
   margin: 0;
-  padding: 20px;
+  padding: 0;
   display: flex;
   justify-content: center;
+  min-height: 100vh; /* Garante que o body cubra pelo menos toda a altura da tela */
 }
 
 /* Container principal */
@@ -22,7 +27,7 @@ body {
 /* Título principal */
 h1 {
   text-align: center;
-  color: #6a1b9a; /* Roxo escuro */
+  color: #87CEFA; /* Roxo escuro */
 }
 
 /* Estilo do formulário */
@@ -35,13 +40,13 @@ form {
 /* Estilo do label */
 label {
   font-size: 1rem;
-  color: #555;
+  color: #000000;
 }
 
 /* Estilo do input de arquivo */
 input[type="file"] {
   padding: 10px;
-  border: 2px solid #6a1b9a; /* Roxo escuro */
+  border: 2px solid #35D7FF; 
   border-radius: 5px;
   font-size: 1rem;
   outline: none;
@@ -50,13 +55,12 @@ input[type="file"] {
 }
 
 input[type="file"]:hover {
-  border-color: #9c4dcc; /* Roxo mais claro */
+  border-color: #35D7FF; 
 }
 
 /* Estilo dos botões */
 button {
-  background-color: #6a1b9a; /* Roxo escuro */
-  color: #ffffff;
+  background-color: #2aa6f3; 
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
@@ -66,7 +70,7 @@ button {
 }
 
 button:hover {
-  background-color: #9c4dcc; /* Roxo mais claro */
+  background-color: #2aa6f3; /* Roxo mais claro */
 }
 
 /* Área de saída (resultado) */
@@ -93,7 +97,7 @@ button:hover {
 
 /* Estilo do botão de download */
 #downloadFile {
-  background-color: #8e24aa; /* Roxo médio */
+  background-color: #2aa6f3; 
   color: #ffffff;
   padding: 10px 20px;
   border-radius: 5px;
@@ -104,5 +108,5 @@ button:hover {
 }
 
 #downloadFile:hover {
-  background-color: #9c4dcc; /* Roxo mais claro */
+  background-color: #87CEFA; /* Roxo mais claro */
 }
