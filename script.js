@@ -15,16 +15,13 @@ document.getElementById("processFile").addEventListener("click", () => {
 
     let workbook;
     if (file.name.endsWith(".csv")) {
-      // Se for CSV, trata como texto
       const rows = data.split("\n").map(row => row.split(";"));
       const formattedData = processCsvData(rows);
       outputArea.value = formattedData;
     } else {
-      // Se for Excel, usa a biblioteca XLSX
       workbook = XLSX.read(data, { type: "binary" });
       const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
       const formattedData = processCsvData(jsonData);
       outputArea.value = formattedData;
     }
@@ -39,40 +36,33 @@ document.getElementById("processFile").addEventListener("click", () => {
 });
 
 function processCsvData(data) {
-  const defaultDDD = "11";
-  const defaultOperator = "9";
   const formattedLines = [];
+  let maxColumns = 0;
 
+  // Calcula o número máximo de colunas
+  data.forEach(row => {
+    if (row.length > maxColumns) {
+      maxColumns = row.length;
+    }
+  });
+
+  // Processa cada linha
   data.forEach((row) => {
     if (row.length === 0) return; // Ignora linhas vazias
 
-    // Cria uma nova linha formatada
-    const formattedRow = row.map((cell, index, array) => {
+    const formattedRow = row.map(cell => {
       if (typeof cell === "string") {
-        // Substitui "," por ";", remove parênteses e espaços antes e depois
-        cell = cell.replace(/,/g, ";").replace(/[()\-]/g, "").trim();
+        cell = cell
+          .replace(/,/g, ";") // Substitui vírgulas por ponto e vírgula
+          .replace(/[()\-]/g, "") // Remove parênteses e traços
+          .trim(); // Remove espaços em excesso
       }
-
-      if (typeof cell === "number" || /^\d+$/.test(cell)) {
-        // Remove todos os caracteres não numéricos
-        let phone = cell.toString().replace(/\D/g, '');
-
-        // Adiciona o DDD e operador, se necessário
-        if (phone.length === 8) {
-          phone = defaultDDD + phone;
-        } else if (phone.length === 10) {
-          phone = phone.slice(0, 2) + defaultOperator + phone.slice(2);
-        }
-
-        return phone;
-      }
-
-      return cell; // Retorna o valor ajustado
+      return cell || ""; // Garante que valores vazios sejam tratados
     });
 
-    // Adiciona as colunas vazias necessárias para manter a consistência
-    while (formattedRow.length < data[0].length) {
-      formattedRow.push('');
+    // Adiciona separadores para completar as colunas vazias
+    while (formattedRow.length < maxColumns) {
+      formattedRow.push("");
     }
 
     formattedLines.push(formattedRow.join(";"));
@@ -91,7 +81,7 @@ document.getElementById("downloadFile").addEventListener("click", () => {
 
   const fileInput = document.getElementById("fileInput");
   const originalFileName = fileInput.files[0].name;
-  const formattedFileName = originalFileName.replace(/(\.[^.]+)$/, "-formatado$1"); // Adiciona "-formatado" antes da extensão
+  const formattedFileName = originalFileName.replace(/(\.[^.]+)$/, "-formatado$1");
 
   const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
