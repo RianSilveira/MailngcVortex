@@ -46,7 +46,8 @@ function processCsvData(data) {
   data.forEach((row) => {
     if (row.length === 0) return; // Ignora linhas vazias
 
-    const formattedRow = row.map((cell) => {
+    // Cria uma nova linha formatada
+    const formattedRow = row.map((cell, index, array) => {
       if (typeof cell === "string") {
         // Substitui "," por ";", remove parênteses e espaços antes e depois
         cell = cell.replace(/,/g, ";").replace(/[()\-]/g, "").trim();
@@ -68,6 +69,11 @@ function processCsvData(data) {
 
       return cell; // Retorna o valor ajustado
     });
+
+    // Adiciona as colunas vazias necessárias para manter a consistência
+    while (formattedRow.length < data[0].length) {
+      formattedRow.push('');
+    }
 
     formattedLines.push(formattedRow.join(";"));
   });
