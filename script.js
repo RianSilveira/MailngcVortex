@@ -49,7 +49,7 @@ function processCsvData(data) {
     const formattedRow = row.map((cell) => {
       if (typeof cell === "string") {
         // Substitui "," por ";", remove parênteses e espaços antes e depois
-        cell = cell.replace(/,/g, ";").replace(/[()]/g, "").trim();
+        cell = cell.replace(/,/g, ";").replace(/[()\-]/g, "").trim();
       }
 
       if (typeof cell === "number" || /^\d+$/.test(cell)) {
