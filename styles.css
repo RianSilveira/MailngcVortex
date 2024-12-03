@@ -11,7 +11,9 @@ body {
   padding: 0;
   display: flex;
   justify-content: center;
+  align-items: center; /* Centraliza a box verticalmente */
   min-height: 100vh; /* Garante que o body cubra pelo menos toda a altura da tela */
+  box-sizing: border-box; /* Para incluir padding e border no cálculo da altura */
 }
 
 /* Container principal */
@@ -19,9 +21,12 @@ body {
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 90%;
-  max-width: 800px;
+  padding: 50px;
+  width: 90%; /* Ajusta a largura da box */
+  max-width: 800px; /* Limita a largura máxima */
+  margin-top: 10px; /* Espaço de 15px na parte superior */
+  margin-bottom: 10px; /* Espaço de 15px na parte inferior */
+  box-sizing: border-box; /* Inclui padding e borda na largura total */
 }
 
 /* Título principal */
@@ -79,6 +84,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 10px; /* Menor espaçamento abaixo do botão */
 }
 
 /* Estilo da área de texto */
