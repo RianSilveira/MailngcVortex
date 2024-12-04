@@ -55,7 +55,8 @@ function processCsvData(data) {
         cell = cell
           .replace(/,/g, ";") // Substitui vírgulas por ponto e vírgula
           .replace(/[()\-]/g, "") // Remove parênteses e traços
-          .trim(); // Remove espaços em excesso
+          .replace(/\s*;\s*/g, ";") // Remove espaços antes e depois do ponto e vírgula
+          .trim(); // Remove espaços no início e no final da célula
       }
       return cell || ""; // Garante que valores vazios sejam tratados
     });
