@@ -14,8 +14,9 @@ document.getElementById("processFile").addEventListener("click", () => {
     const data = event.target.result;
 
     let workbook;
-    if (file.name.endsWith(".csv")) {
-      const rows = data.split("\n").map(row => row.split(";"));
+    if (file.name.endsWith(".csv") || file.name.endsWith(".tsv") || file.name.endsWith(".txt")) {
+      const delimiter = file.name.endsWith(".tsv") ? "\t" : (file.name.endsWith(".csv") ? "," : detectDelimiter(data));
+      const rows = data.split("\n").map(row => row.split(delimiter));
       const formattedData = processCsvData(rows);
       outputArea.value = formattedData;
     } else {
@@ -28,12 +29,16 @@ document.getElementById("processFile").addEventListener("click", () => {
     alert("O conteúdo do arquivo foi ajustado com sucesso!");
   };
 
-  if (file.name.endsWith(".csv")) {
-    reader.readAsText(file, "utf-8");
-  } else {
-    reader.readAsBinaryString(file);
-  }
+  reader.readAsText(file, "utf-8");
 });
+
+// Detecta o delimitador em arquivos genéricos
+function detectDelimiter(data) {
+  if (data.includes("\t")) return "\t";
+  if (data.includes(",")) return ",";
+  if (data.includes(";")) return ";";
+  return " "; // fallback para espaços
+}
 
 function processCsvData(data) {
   const formattedLines = [];
@@ -54,8 +59,10 @@ function processCsvData(data) {
       if (typeof cell === "string") {
         cell = cell
           .replace(/,/g, ";") // Substitui vírgulas por ponto e vírgula
+          .replace(/\t/g, ";") // Substitui tabulações por ponto e vírgula
           .replace(/[()\-]/g, "") // Remove parênteses e traços
           .replace(/\s*;\s*/g, ";") // Remove espaços antes e depois do ponto e vírgula
+          .replace(/[\s]/g, "") // Remove todos os espaços
           .trim(); // Remove espaços no início e no final da célula
       }
       return cell || ""; // Garante que valores vazios sejam tratados
@@ -66,7 +73,7 @@ function processCsvData(data) {
       formattedRow.push("");
     }
 
-    formattedLines.push(formattedRow.join(";"));
+    formattedLines.push(formattedRow.join(";")); // Garante a saída final em CSV
   });
 
   return formattedLines.join("\n");
@@ -82,7 +89,7 @@ document.getElementById("downloadFile").addEventListener("click", () => {
 
   const fileInput = document.getElementById("fileInput");
   const originalFileName = fileInput.files[0].name;
-  const formattedFileName = originalFileName.replace(/(\.[^.]+)$/, "-formatado$1");
+  const formattedFileName = originalFileName.replace(/(\.[^.]+)$/, "-formatado.csv");
 
   const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
