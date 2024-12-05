@@ -57,6 +57,11 @@ function processCsvData(data) {
           .replace(/[()\-]/g, "") // Remove parênteses e traços
           .replace(/[_=]/g, "") // Remove _ e =
           .trim(); // Remove espaços em excesso
+
+        // Remove espaços de telefones e mantém no formato numérico
+        if (/^\+?\d[\d\s]*$/.test(cell)) {
+          cell = cell.replace(/\s+/g, "");
+        }
       }
       return cell || ""; // Garante que valores vazios sejam tratados
     });
